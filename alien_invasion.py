@@ -21,7 +21,11 @@ def run_game():
   while True:
     gf.check_events(ai_settings, screen, ship, bullets)
     ship.update()
-    bullets.update()
+    # bullets.update()
+    gf.update_bullets(bullets)
     gf.update_screen(ai_settings, screen, ship, bullets)
+
+    # get rid of the old bullets that have gone off the screen
+
 
 run_game()
