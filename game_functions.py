@@ -65,12 +65,7 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
   # check to see if any lasers have hit an alien craft
   # and if they have then destroy both objects
 
-  collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
-
-  if len(aliens) == 0:
-    # destroy existing lasers and create a new fleet
-    bullets.empty()
-    create_fleet(ai_settings, screen, ship, aliens)
+  check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets)
 
 def fire_bullet(ai_settings, screen, ship, bullets):
   """Fire a bullet if the bullet limit is not reached"""
@@ -128,3 +123,12 @@ def change_fleet_direction(ai_settings, aliens):
   for alien in aliens.sprites():
     alien.rect.y += ai_settings.fleet_drop_speed
   ai_settings.fleet_direction *= -1
+
+def check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets):
+  """Respond to any bullet/alien collisions"""
+  collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+
+  if len(aliens) == 0:
+    # destroy existing lasers and create a new fleet
+    bullets.empty()
+    create_fleet(ai_settings, screen, ship, aliens)
