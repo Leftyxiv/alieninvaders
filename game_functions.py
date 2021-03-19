@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 
 import pygame
 from bullet import Bullet
@@ -106,14 +107,14 @@ def get_number_rows(ai_settings, ship_height, alien_height):
   num_rows = int(available_space_y / (2 * alien_height))
   return num_rows
 
-def update_aliens(ai_settings, ship, aliens):
+def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
   """Update the positions of the aliens"""
   check_fleet_edge(ai_settings, aliens)
   aliens.update()
 
   # look for alien/ship collisions
   if pygame.sprite.spritecollideany(ship, aliens):
-    print('placeholder')
+    ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
 
 def check_fleet_edge(ai_settings, aliens):
   """Respond appropriately when any aliens reach the edge of the screen"""
@@ -136,3 +137,15 @@ def check_bullet_alien_collision(ai_settings, screen, ship, aliens, bullets):
     # destroy existing lasers and create a new fleet
     bullets.empty()
     create_fleet(ai_settings, screen, ship, aliens)
+
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+  """Responds to ship being hit by an alien"""
+  stats.ships_left -= 1
+
+  aliens.empty()
+  bullets.empty()
+
+  create_fleet(ai_settings, screen, ship, aliens)
+  ship.center_ship()
+
+  sleep(.5)
